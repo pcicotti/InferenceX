@@ -10,7 +10,6 @@ check_env_vars \
     TP \
     EP_SIZE \
     DP_ATTENTION \
-    MAX_NUM_TOK \
     MAX_MODEL_LEN \
     RANDOM_RANGE_RATIO \
     RESULT_FILENAME
@@ -41,10 +40,10 @@ start_gpu_monitor
 
 set -x
 
-mpirun -n 1 --oversubscribe \
+mpirun -n 1 --oversubscribe --allow-run-as-root \
 trtllm-serve $MODEL \
 --max_batch_size $CONC \
---max_num_tokens $MAX_NUM_TOK \
+--max_num_tokens $MAX_NUM_TOKENS \
 --max_seq_len $MAX_MODEL_LEN \
 --tp_size $TP \
 --ep_size $EP_SIZE \
@@ -60,7 +59,7 @@ SERVER_PID=$!
 wait_for_server_ready --port "$PORT" --server-log "$LOG_FILENAME" --server-pid "$SERVER_PID"
 
 run_benchmark_serving \
-    --bench-serving-dir /workspace/infx \
+    --bench-serving-dir /infx \
     --model "$MODEL" \
     --port "$PORT" \
     --backend openai \
