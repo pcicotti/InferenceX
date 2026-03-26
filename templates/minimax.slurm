@@ -2,7 +2,7 @@
 #SBATCH --nodes=1
 #SBATCH --time=01:00:00
 #SBATCH --job-name=coreai_trtllm_minimax
-#SBATCH --output=X_JOBDIR/minimax%j/minimax_%j.out
+#SBATCH --output=X_JOBDIR/minimax_X_NAME_%j/output.txt
 #SBATCH --partition=X_PARTITION
 #SBATCH --gpus=X_GPUS
 

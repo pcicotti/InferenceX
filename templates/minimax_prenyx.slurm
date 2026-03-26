@@ -2,7 +2,7 @@
 #SBATCH --nodes=1
 #SBATCH --time=01:00:00
 #SBATCH --job-name=coreai_comparch_trtllm-inferencex.minimax
-#SBATCH --output=/home/pcicotti/fsw/minimax/minimax%j/minimax_%j.out
+#SBATCH --output=/home/pcicotti/fsw/minimax/minimax_X_NAME_%j/output.txt
 #SBATCH --partition=b200-a01r
 #SBATCH --account=coreai_comparch_trtllm
 
