@@ -18,11 +18,11 @@ ISL=X_ISL
 OSL=X_OSL
 CONC=X_CONC
 TP=X_TP
-EP_SIZE=X_EP_SIZE
-DP_ATTENTION=X_DP_ATTENTION
+EP_SIZE=X_EP
+DP_ATTENTION=X_DP_ATTN
 RANDOM_RANGE_RATIO=0.0
 RESULT_FILENAME=minimax_test_result.json,
-MAX_SEQ_LEN=$(( $ISL + $OSL ))
+MAX_MODEL_LEN=$(( $ISL + $OSL ))
 
 srun -N 1 \
     --container-image=$container_image \
@@ -31,5 +31,5 @@ srun -N 1 \
     --container-workdir=/workspace \
     --mpi=pmix \
     --gpus=8 \
-    --export ISL,OSL,CONC,TP,EP_SIZE,DP_ATTENTION,RANDOM_RANGE_RATIO,RESULT_FILENAME,MAX_SEQ_LEN \
+    --export ISL,OSL,CONC,TP,EP_SIZE,DP_ATTENTION,RANDOM_RANGE_RATIO,RESULT_FILENAME,MAX_MODEL_LEN \
     X_INFX/benchmarks/single_node/X_SCRIPT.sh
