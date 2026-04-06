@@ -6641,9 +6641,6 @@ minimaxm2.5-fp8-b200-trt:
   - isl: 1024
     osl: 1024
     search-space:
-    - { tp: 2, ep: 1, conc-start: 4, conc-end: 256 } 
-    - { tp: 4, ep: 1, conc-start: 4, conc-end: 256 } 
-    - { tp: 8, ep: 1, conc-start: 4, conc-end: 256 }
     - { tp: 2, ep: 2, conc-start: 4, conc-end: 256 } 
     - { tp: 4, ep: 4, conc-start: 4, conc-end: 256 } 
     - { tp: 8, ep: 8, conc-start: 4, conc-end: 256 }
