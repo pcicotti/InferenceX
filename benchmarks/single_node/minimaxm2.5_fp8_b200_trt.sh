@@ -21,6 +21,9 @@ check_env_vars \
 echo "CONC: $CONC, ISL: $ISL, OSL: $OSL, TP: $TP, EP_SIZE: $EP_SIZE, DP_ATTENTION: $DP_ATTENTION"
 MAX_NUM_TOKENS=$(( ($CONC+$ISL+64+63)/64*64 ))
 MAX_NUM_TOKENS=$(( MAX_NUM_TOKENS > 8192 ? MAX_NUM_TOKENS : 8192 ))
+capture_tokens=(1 2 4 8 16 32 64 128)
+capture_tokens+=( $(seq 256 256 $MAX_NUM_TOKENS))
+CAPTURE_TOKENS_LIST=$(printf "%s, " "${capture_tokens[@]}")
 
 #hf download "$MODEL"
 
@@ -29,11 +32,25 @@ LOG_FILENAME=/workspace/server.log
 PORT=8033
 cat << EOF > $CONFIG_FILENAME
 cuda_graph_config:
-  enable_padding: true
-enable_attention_dp: true
+    enable_padding: true
+    max_batch_size: $CONC
 moe_config:
     backend: DEEPGEMM
+enable_attention_dp: false
 EOF
+#torch_compile_config:
+#  capture_num_tokens: [${CAPTURE_TOKENS_LIST%, }]
+#  enable_piecewise_cuda_graph: true
+#kv_cache_config:
+#    dtype: fp8
+#    free_gpu_memory_fraction: $KV_CACHE_FREE_MEM_FRACTION
+#    enable_block_reuse: false 
+#stream_interval: 10
+#moe_config:
+#  backend: WIDEEP
+#moe_config:
+    #backend: TRTLLM
+    #backend: DEEPGEMM
 
 # Start GPU monitoring (power, temperature, clocks every second)
 start_gpu_monitor
@@ -76,6 +93,15 @@ if [ "${RUN_EVAL}" = "true" ]; then
     run_eval --framework lm-eval --port "$PORT" --concurrent-requests $CONC
     append_lm_eval_summary
 fi
+
+
+#export RUNNER_TYPE=b200
+#export FRAMEWORK=trt
+#export PRECISION=fp8
+#export SPEC_DECODING=None
+#export DISAGG=None
+#export MODEL_PREFIX=minimaxm2.5
+#export IMAGE=release:1.3.0rc8
 
 # Stop GPU monitoring
 stop_gpu_monitor

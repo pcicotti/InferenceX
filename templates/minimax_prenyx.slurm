@@ -7,12 +7,13 @@
 #SBATCH --account=coreai_comparch_trtllm
 
 model=/lustre/share/coreai_dlalgo_ci/artifacts/model/minimaxai_minimax-m2_5/safetensors_mode-instruct/hf-3040beaf-nim
-workspace=/home/pcicotti/fsw/minimax/minimax$SLURM_JOBID
+workspace=/home/pcicotti/fsw/minimax/minimax_X_NAME_$SLURM_JOBID
 cache=/home/pcicotti/fsw/cache
 infx=/home/pcicotti/project/minimax/infx
-container_image=$SQSH_IMAGES_DIR/release-1.3.0rc8_x64.sqsh
-container_name=r130rc8
-container_mounts=$workspace:/workspace,$infx:/infx,$model:/model,$cache:$cache
+trtllm=/home/pcicotti/project/trtllm
+container_image=$SQSH_IMAGES_DIR/devel-1.3.0rc9_x64.sqsh
+container_name=r130rc9
+container_mounts=$workspace:/workspace,$infx:/infx,$model:/model,$cache:$cache,$trtllm:/trtllm
 
 export MODEL=/model
 export ISL=X_ISL
