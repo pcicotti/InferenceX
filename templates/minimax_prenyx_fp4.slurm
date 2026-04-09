@@ -6,7 +6,7 @@
 #SBATCH --partition=b200-a01r
 #SBATCH --account=coreai_comparch_trtllm
 
-model=/lustre/share/coreai_dlalgo_ci/artifacts/model/minimaxai_minimax-m2_5/safetensors_mode-instruct/hf-3040beaf-nim
+model=/lustre/share/coreai_dlalgo_ci/artifacts/model/nvidia_minimax-m2.5-nvfp4/hf/hf-a9e2fe8_orig
 workspace=/home/pcicotti/fsw/minimax/minimax_X_NAME_$SLURM_JOBID
 cache=/home/pcicotti/fsw/cache
 infx=/home/pcicotti/project/minimax/infx
@@ -35,4 +35,4 @@ srun -N 1 \
     --container-workdir=/workspace \
     --mpi=pmix \
     --export MODEL,ISL,OSL,CONC,TP,EP_SIZE,DP_ATTENTION,RANDOM_RANGE_RATIO,RESULT_FILENAME,MAX_MODEL_LEN,MOE_BACKEND \
-    /infx/benchmarks/single_node/minimaxm2.5_fp8_b200_trt.sh
+    /infx/benchmarks/single_node/minimaxm2.5_fp4_b200_trt.sh

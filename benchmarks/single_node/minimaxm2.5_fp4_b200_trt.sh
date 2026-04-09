@@ -20,7 +20,7 @@ check_env_vars \
 
 echo "CONC: $CONC, ISL: $ISL, OSL: $OSL, TP: $TP, EP_SIZE: $EP_SIZE, DP_ATTENTION: $DP_ATTENTION"
 MAX_NUM_TOKENS=$(( ($CONC+$ISL+64+63)/64*64 ))
-MAX_NUM_TOKENS=$(( MAX_NUM_TOKENS > 16384 ? MAX_NUM_TOKENS : 16384 ))
+MAX_NUM_TOKENS=$(( MAX_NUM_TOKENS > 8192 ? MAX_NUM_TOKENS : 8192 ))
 capture_tokens=(1 2 4 8 16 32 64 128)
 capture_tokens+=( $(seq 256 256 $MAX_NUM_TOKENS))
 CAPTURE_TOKENS_LIST=$(printf "%s, " "${capture_tokens[@]}")
@@ -43,13 +43,13 @@ kv_cache_config:
 stream_interval: 10
 EOF
 
-if [[ $DP_ATTENTION -eq "true" ]]; then
-cat << EOF >> $CONFIG_FILENAME
-torch_compile_config:
-    capture_num_tokens: [${CAPTURE_TOKENS_LIST%, }]
-    enable_piecewise_cuda_graph: true
-EOF
-fi
+#if [[ $DP_ATTENTION -eq "true" ]]; then
+#cat << EOF >> $CONFIG_FILENAME
+#torch_compile_config:
+#    capture_num_tokens: [${CAPTURE_TOKENS_LIST%, }]
+#    enable_piecewise_cuda_graph: true
+#EOF
+#fi
 
 # Start GPU monitoring (power, temperature, clocks every second)
 start_gpu_monitor
